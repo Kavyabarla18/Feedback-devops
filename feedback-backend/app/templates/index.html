@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Collection System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-comments"></i>
+            <div>
+                <h1>Feedback Collection System</h1>
+                <p>Your voice matters - Help us improve</p>
+            </div>
+        </div>
+        <nav>
+            <a href="#home" class="nav-link active" onclick="showPage('home')">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#submit" class="nav-link" onclick="showPage('submit')">
+                <i class="fas fa-edit"></i> Submit
+            </a>
+            <a href="#analytics" class="nav-link" onclick="showPage('analytics')">
+                <i class="fas fa-chart-bar"></i> Analytics
+            </a>
+        </nav>
+    </header>
+
+    <!-- Home Page - Recent Feedback -->
+    <div id="home-page" class="page active">
+        <div class="container">
+            <div class="page-header">
+                <h2>Recent Feedback</h2>
+                <p>See what our community is saying</p>
+            </div>
+            <div id="feedback-list" class="feedback-grid">
+                <div class="loading">Loading feedback...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Page -->
+    <div id="submit-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h2>Share Your Feedback</h2>
+                <p>We value your opinion and strive to improve</p>
+            </div>
+
+            <div class="feedback-form-container">
+                <div class="form-header">
+                    <h3>Feedback Form</h3>
+                    <p>Tell us about your experience. Your feedback helps us improve our services.</p>
+                </div>
+
+                <form id="feedback-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="john@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <div class="star-rating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                            <span class="rating-text">Select rating</span>
+                        </div>
+                        <input type="hidden" id="rating" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category">
+                            <option value="">Select a category</option>
+                            <option value="Product Quality">Product Quality</option>
+                            <option value="Customer Service">Customer Service</option>
+                            <option value="Website Experience">Website Experience</option>
+                            <option value="Delivery">Delivery</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback">Your Feedback</label>
+                        <textarea id="feedback" rows="6" placeholder="Share your thoughts, suggestions, or concerns..." required></textarea>
+                        <div class="char-count"><span id="char-count">0</span> / 1000</div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Feedback
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Page -->
+    <div id="analytics-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h2>Feedback Analytics</h2>
+                <p>Statistics and insights from our community</p>
+            </div>
+            <div class="analytics-grid">
+                <div class="stat-card">
+                    <i class="fas fa-comments"></i>
+                    <h3 id="total-feedback">0</h3>
+                    <p>Total Feedback</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-smile"></i>
+                    <h3 id="positive-feedback">0</h3>
+                    <p>Positive</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-meh"></i>
+                    <h3 id="neutral-feedback">0</h3>
+                    <p>Neutral</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-frown"></i>
+                    <h3 id="negative-feedback">0</h3>
+                    <p>Negative</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

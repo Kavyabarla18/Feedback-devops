@@ -1,0 +1,16 @@
+# Include base requirements
+-r requirements.txt
+
+# Development Tools
+ipython==8.16.1
+ipdb==0.13.13
+
+# Testing & Coverage
+pytest-watch==4.2.0
+coverage==7.3.2
+
+# Code Formatting
+autopep8==2.0.4
+
+# Documentation
+sphinx==7.2.6

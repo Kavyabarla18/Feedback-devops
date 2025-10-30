@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: ./feedback-backend
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./feedback-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
