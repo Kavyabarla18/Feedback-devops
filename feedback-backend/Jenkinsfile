@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_HUB_REPO = 'kavyabarla/feedback-backend'
+        DOCKER_IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code from GitHub...'
+                git branch: 'main', 
+                    url: 'https://github.com/Kavyabarla18/Feedback-devops.git'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                script {
+                    dockerImage = docker.build("${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}")
+                    docker.build("${DOCKER_HUB_REPO}:latest")
+                }
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                echo 'Running tests...'
+                script {
+                    docker.image("${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}").inside {
+                        sh 'echo "Tests placeholder - add pytest later"'
+                    }
+                }
+            }
+        }
+        
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Pushing Docker image to Docker Hub...'
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
+                        dockerImage.push("${DOCKER_IMAGE_TAG}")
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                echo 'Deployment stage - Kubernetes deployment will be added here'
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs for details.'
+        }
+        always {
+            echo 'Cleaning up...'
+            sh 'docker system prune -f'
+        }
+    }
+}
