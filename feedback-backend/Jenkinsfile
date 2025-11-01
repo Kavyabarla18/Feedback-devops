@@ -55,10 +55,32 @@ stage('Push to Docker Hub') {
 
         
         stage('Deploy') {
-            steps {
-                echo 'Deployment stage - Kubernetes deployment will be added here'
-            }
+    steps {
+        echo 'Deploying application...'
+        script {
+            sh '''
+                # Stop and remove old container if exists
+                docker stop feedback-backend || true
+                docker rm feedback-backend || true
+                
+                # Run new container
+                docker run -d \
+                  --name feedback-backend \
+                  -p 5000:5000 \
+                  kavyabarla/feedback-backend:${BUILD_NUMBER}
+                
+                # Wait for container to start
+                sleep 5
+                
+                # Verify deployment
+                docker ps | grep feedback-backend
+                echo "Application deployed successfully!"
+                echo "Access at: http://localhost:5000"
+            '''
         }
+    }
+}
+
     }
     
     post {
