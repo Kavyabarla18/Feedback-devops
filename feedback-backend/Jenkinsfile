@@ -1,4 +1,4 @@
-pipeline {
+cpipeline {
     agent any
     
     environment {
@@ -20,8 +20,10 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    dockerImage = docker.build("${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}")
-                    docker.build("${DOCKER_HUB_REPO}:latest")
+                    dir('feedback-backend') {  // THIS IS THE KEY FIX
+                        dockerImage = docker.build("${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}")
+                        docker.build("${DOCKER_HUB_REPO}:latest")
+                    }
                 }
             }
         }
@@ -69,3 +71,4 @@ pipeline {
         }
     }
 }
+
