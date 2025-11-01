@@ -54,32 +54,29 @@ stage('Push to Docker Hub') {
 */
 
         
-        stage('Deploy') {
+stage('Deploy to Kubernetes') {
     steps {
-        echo 'Deploying application...'
+        echo 'Deploying to Kubernetes...'
         script {
-            sh '''
-                # Stop and remove old container if exists
-                docker stop feedback-backend || true
-                docker rm feedback-backend || true
-                
-                # Run new container
-                docker run -d \
-                  --name feedback-backend \
-                  -p 5000:5000 \
-                  kavyabarla/feedback-backend:${BUILD_NUMBER}
-                
-                # Wait for container to start
-                sleep 5
-                
-                # Verify deployment
-                docker ps | grep feedback-backend
-                echo "Application deployed successfully!"
-                echo "Access at: http://localhost:5000"
-            '''
+            dir('feedback-backend') {
+                sh '''
+                    # Update image tag
+                    sed -i "s|image: kavyabarla/feedback-backend:.*|image: kavyabarla/feedback-backend:${BUILD_NUMBER}|g" k8s/deployment.yaml
+                    
+                    # Apply deployment
+                    kubectl apply -f k8s/deployment.yaml
+                    
+                    # Wait for rollout
+                    kubectl rollout status deployment/feedback-backend
+                    
+                    # Show pods
+                    kubectl get pods -l app=feedback-backend
+                '''
+            }
         }
     }
 }
+
 
     }
     
